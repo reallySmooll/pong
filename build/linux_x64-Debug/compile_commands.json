@@ -1,0 +1,74 @@
+[
+{
+  "directory": "/home/smoolldev/SmoollDev/Development/C++/pong/build/linux_x64-Debug",
+  "command": "/usr/bin/c++ -g -std=gnu++20 -flto=auto -fno-fat-lto-objects -fmodules-ts -fmodule-mapper=CMakeFiles/pong.dir/src/CCAudio.cpp.o.modmap -MD -fdeps-format=p1689r5 -x c++ -o CMakeFiles/pong.dir/src/CCAudio.cpp.o -c /home/smoolldev/SmoollDev/Development/C++/pong/src/CCAudio.cpp",
+  "file": "/home/smoolldev/SmoollDev/Development/C++/pong/src/CCAudio.cpp",
+  "output": "CMakeFiles/pong.dir/src/CCAudio.cpp.o"
+},
+{
+  "directory": "/home/smoolldev/SmoollDev/Development/C++/pong/build/linux_x64-Debug",
+  "command": "/usr/bin/c++ -g -std=gnu++20 -flto=auto -fno-fat-lto-objects -fmodules-ts -fmodule-mapper=CMakeFiles/pong.dir/src/CCEvent.cpp.o.modmap -MD -fdeps-format=p1689r5 -x c++ -o CMakeFiles/pong.dir/src/CCEvent.cpp.o -c /home/smoolldev/SmoollDev/Development/C++/pong/src/CCEvent.cpp",
+  "file": "/home/smoolldev/SmoollDev/Development/C++/pong/src/CCEvent.cpp",
+  "output": "CMakeFiles/pong.dir/src/CCEvent.cpp.o"
+},
+{
+  "directory": "/home/smoolldev/SmoollDev/Development/C++/pong/build/linux_x64-Debug",
+  "command": "/usr/bin/c++ -g -std=gnu++20 -flto=auto -fno-fat-lto-objects -fmodules-ts -fmodule-mapper=CMakeFiles/pong.dir/src/CCFont.cpp.o.modmap -MD -fdeps-format=p1689r5 -x c++ -o CMakeFiles/pong.dir/src/CCFont.cpp.o -c /home/smoolldev/SmoollDev/Development/C++/pong/src/CCFont.cpp",
+  "file": "/home/smoolldev/SmoollDev/Development/C++/pong/src/CCFont.cpp",
+  "output": "CMakeFiles/pong.dir/src/CCFont.cpp.o"
+},
+{
+  "directory": "/home/smoolldev/SmoollDev/Development/C++/pong/build/linux_x64-Debug",
+  "command": "/usr/bin/c++ -g -std=gnu++20 -flto=auto -fno-fat-lto-objects -fmodules-ts -fmodule-mapper=CMakeFiles/pong.dir/src/CCKeyboard.cpp.o.modmap -MD -fdeps-format=p1689r5 -x c++ -o CMakeFiles/pong.dir/src/CCKeyboard.cpp.o -c /home/smoolldev/SmoollDev/Development/C++/pong/src/CCKeyboard.cpp",
+  "file": "/home/smoolldev/SmoollDev/Development/C++/pong/src/CCKeyboard.cpp",
+  "output": "CMakeFiles/pong.dir/src/CCKeyboard.cpp.o"
+},
+{
+  "directory": "/home/smoolldev/SmoollDev/Development/C++/pong/build/linux_x64-Debug",
+  "command": "/usr/bin/c++ -g -std=gnu++20 -flto=auto -fno-fat-lto-objects -fmodules-ts -fmodule-mapper=CMakeFiles/pong.dir/src/CCRender.cpp.o.modmap -MD -fdeps-format=p1689r5 -x c++ -o CMakeFiles/pong.dir/src/CCRender.cpp.o -c /home/smoolldev/SmoollDev/Development/C++/pong/src/CCRender.cpp",
+  "file": "/home/smoolldev/SmoollDev/Development/C++/pong/src/CCRender.cpp",
+  "output": "CMakeFiles/pong.dir/src/CCRender.cpp.o"
+},
+{
+  "directory": "/home/smoolldev/SmoollDev/Development/C++/pong/build/linux_x64-Debug",
+  "command": "/usr/bin/c++ -g -std=gnu++20 -flto=auto -fno-fat-lto-objects -fmodules-ts -fmodule-mapper=CMakeFiles/pong.dir/src/CCScene.cpp.o.modmap -MD -fdeps-format=p1689r5 -x c++ -o CMakeFiles/pong.dir/src/CCScene.cpp.o -c /home/smoolldev/SmoollDev/Development/C++/pong/src/CCScene.cpp",
+  "file": "/home/smoolldev/SmoollDev/Development/C++/pong/src/CCScene.cpp",
+  "output": "CMakeFiles/pong.dir/src/CCScene.cpp.o"
+},
+{
+  "directory": "/home/smoolldev/SmoollDev/Development/C++/pong/build/linux_x64-Debug",
+  "command": "/usr/bin/c++ -g -std=gnu++20 -flto=auto -fno-fat-lto-objects -fmodules-ts -fmodule-mapper=CMakeFiles/pong.dir/src/CCSceneManager.cpp.o.modmap -MD -fdeps-format=p1689r5 -x c++ -o CMakeFiles/pong.dir/src/CCSceneManager.cpp.o -c /home/smoolldev/SmoollDev/Development/C++/pong/src/CCSceneManager.cpp",
+  "file": "/home/smoolldev/SmoollDev/Development/C++/pong/src/CCSceneManager.cpp",
+  "output": "CMakeFiles/pong.dir/src/CCSceneManager.cpp.o"
+},
+{
+  "directory": "/home/smoolldev/SmoollDev/Development/C++/pong/build/linux_x64-Debug",
+  "command": "/usr/bin/c++ -g -std=gnu++20 -flto=auto -fno-fat-lto-objects -fmodules-ts -fmodule-mapper=CMakeFiles/pong.dir/src/CCText.cpp.o.modmap -MD -fdeps-format=p1689r5 -x c++ -o CMakeFiles/pong.dir/src/CCText.cpp.o -c /home/smoolldev/SmoollDev/Development/C++/pong/src/CCText.cpp",
+  "file": "/home/smoolldev/SmoollDev/Development/C++/pong/src/CCText.cpp",
+  "output": "CMakeFiles/pong.dir/src/CCText.cpp.o"
+},
+{
+  "directory": "/home/smoolldev/SmoollDev/Development/C++/pong/build/linux_x64-Debug",
+  "command": "/usr/bin/c++ -g -std=gnu++20 -flto=auto -fno-fat-lto-objects -fmodules-ts -fmodule-mapper=CMakeFiles/pong.dir/src/CCTexture.cpp.o.modmap -MD -fdeps-format=p1689r5 -x c++ -o CMakeFiles/pong.dir/src/CCTexture.cpp.o -c /home/smoolldev/SmoollDev/Development/C++/pong/src/CCTexture.cpp",
+  "file": "/home/smoolldev/SmoollDev/Development/C++/pong/src/CCTexture.cpp",
+  "output": "CMakeFiles/pong.dir/src/CCTexture.cpp.o"
+},
+{
+  "directory": "/home/smoolldev/SmoollDev/Development/C++/pong/build/linux_x64-Debug",
+  "command": "/usr/bin/c++ -g -std=gnu++20 -flto=auto -fno-fat-lto-objects -fmodules-ts -fmodule-mapper=CMakeFiles/pong.dir/src/CCTime.cpp.o.modmap -MD -fdeps-format=p1689r5 -x c++ -o CMakeFiles/pong.dir/src/CCTime.cpp.o -c /home/smoolldev/SmoollDev/Development/C++/pong/src/CCTime.cpp",
+  "file": "/home/smoolldev/SmoollDev/Development/C++/pong/src/CCTime.cpp",
+  "output": "CMakeFiles/pong.dir/src/CCTime.cpp.o"
+},
+{
+  "directory": "/home/smoolldev/SmoollDev/Development/C++/pong/build/linux_x64-Debug",
+  "command": "/usr/bin/c++ -g -std=gnu++20 -flto=auto -fno-fat-lto-objects -fmodules-ts -fmodule-mapper=CMakeFiles/pong.dir/src/CCWindow.cpp.o.modmap -MD -fdeps-format=p1689r5 -x c++ -o CMakeFiles/pong.dir/src/CCWindow.cpp.o -c /home/smoolldev/SmoollDev/Development/C++/pong/src/CCWindow.cpp",
+  "file": "/home/smoolldev/SmoollDev/Development/C++/pong/src/CCWindow.cpp",
+  "output": "CMakeFiles/pong.dir/src/CCWindow.cpp.o"
+},
+{
+  "directory": "/home/smoolldev/SmoollDev/Development/C++/pong/build/linux_x64-Debug",
+  "command": "/usr/bin/c++ -g -std=gnu++20 -flto=auto -fno-fat-lto-objects -fmodules-ts -fmodule-mapper=CMakeFiles/pong.dir/src/Game/main.cpp.o.modmap -MD -fdeps-format=p1689r5 -x c++ -o CMakeFiles/pong.dir/src/Game/main.cpp.o -c /home/smoolldev/SmoollDev/Development/C++/pong/src/Game/main.cpp",
+  "file": "/home/smoolldev/SmoollDev/Development/C++/pong/src/Game/main.cpp",
+  "output": "CMakeFiles/pong.dir/src/Game/main.cpp.o"
+}
+]
