@@ -11,6 +11,7 @@
      */
     #include <iostream>
     #include <source_location>
+    #include <regex>
 
     enum Level { INFO = 1, ERROR = 2, WARNING = 3 };
 
@@ -22,12 +23,20 @@
     #define ERROR_R(...) _LOG(std::cerr, Level::ERROR, std::source_location::current(), true, __VA_ARGS__)
     #define WARNING_R(...) _LOG(std::clog, Level::WARNING, std::source_location::current(), true, __VA_ARGS__)
 
+    inline std::string CleanUpFilePath(std::source_location location)
+    {
+        std::regex rg("(.*/)?([^/\\.]+)\\.[^.]*$");
+
+        std::string filename(location.file_name());
+        std::string file = std::regex_replace(filename, rg, "$2");
+
+        return file;
+    }
+
     template <typename TF>
     void _LOG(std::ostream &out, Level logLevel, std::source_location location, TF const&first)
     {
-        std::string filename(location.file_name());
-        size_t lastSlash = filename.find_last_of("/\\");
-        std::string file = filename.substr(lastSlash + 1);
+        std::string file = CleanUpFilePath(location);
 
         switch (logLevel)
         {
@@ -48,9 +57,7 @@
     template <typename TF, typename ...TR>
     void _LOG(std::ostream &out, Level logLevel, std::source_location location, bool overwrite = false, TF const &first = "", TR const &...args)
     {
-        std::string filename(location.file_name());
-        size_t lastSlash = filename.find_last_of("/\\");
-        std::string file = filename.substr(lastSlash + 1);
+        std::string file = CleanUpFilePath(location);
 
         if (!overwrite)
         {
