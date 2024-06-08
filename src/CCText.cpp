@@ -26,7 +26,6 @@ namespace cc
         if (mTextSurface == nullptr)
         { ERROR("failed to create text surface!\n\tsdl_ttf error: ", TTF_GetError()); }
 
-        LOG("getting text offset from text: \"", text, "\"...");
         int textWidth, textHeight;
         if (TTF_SizeUTF8(font, text, &textWidth, &textHeight) != 0)
         { ERROR("failed to get text size!\n\tsdl_ttf error: ", TTF_GetError()); }
