@@ -1,6 +1,7 @@
 #ifndef GLOBALS
 #define GLOBALS
 
+#include <fstream>
 #include <string>
 
 #include "../CC.hpp"
@@ -12,7 +13,9 @@ struct Gamevars
 {
     struct Settings
     {
-        std::string settingsFilepath = "./resources/.settings";
+        std::fstream file;
+
+        std::string filepath = "./resources/.settings";
 
         bool fullscreen = false;
         bool vsync = true;
