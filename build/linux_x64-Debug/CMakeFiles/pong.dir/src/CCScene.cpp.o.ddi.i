@@ -32062,7 +32062,7 @@ namespace cc
 
 
 # 1 "/home/smoolldev/SmoollDev/Development/C++/pong/src/CCLog.hpp" 1
-# 11 "/home/smoolldev/SmoollDev/Development/C++/pong/src/CCLog.hpp"
+# 12 "/home/smoolldev/SmoollDev/Development/C++/pong/src/CCLog.hpp"
 # 1 "/usr/include/c++/14.1.1/iostream" 1 3
 # 36 "/usr/include/c++/14.1.1/iostream" 3
        
@@ -43475,25 +43475,95 @@ namespace std __attribute__ ((__visibility__ ("default")))
 
 
 }
-# 12 "/home/smoolldev/SmoollDev/Development/C++/pong/src/CCLog.hpp" 2
+# 13 "/home/smoolldev/SmoollDev/Development/C++/pong/src/CCLog.hpp" 2
+# 1 "/usr/include/c++/14.1.1/source_location" 1 3
+# 33 "/usr/include/c++/14.1.1/source_location" 3
+# 1 "/usr/include/c++/14.1.1/bits/version.h" 1 3
+# 47 "/usr/include/c++/14.1.1/bits/version.h" 3
+       
+# 48 "/usr/include/c++/14.1.1/bits/version.h" 3
+# 34 "/usr/include/c++/14.1.1/source_location" 2 3
+
+
+
+
+namespace std
+{
+
+
+
+  struct source_location
+  {
+  private:
+    using uint_least32_t = unsigned int;
+    struct __impl
+    {
+      const char* _M_file_name;
+      const char* _M_function_name;
+      unsigned _M_line;
+      unsigned _M_column;
+    };
+    using __builtin_ret_type = decltype(__builtin_source_location());
+
+  public:
+
+
+    static consteval source_location
+    current(__builtin_ret_type __p = __builtin_source_location()) noexcept
+    {
+      source_location __ret;
+      __ret._M_impl = static_cast <const __impl*>(__p);
+      return __ret;
+    }
+
+    constexpr source_location() noexcept { }
+
+
+    constexpr uint_least32_t
+    line() const noexcept
+    { return _M_impl ? _M_impl->_M_line : 0u; }
+
+    constexpr uint_least32_t
+    column() const noexcept
+    { return _M_impl ? _M_impl->_M_column : 0u; }
+
+    constexpr const char*
+    file_name() const noexcept
+    { return _M_impl ? _M_impl->_M_file_name : ""; }
+
+    constexpr const char*
+    function_name() const noexcept
+    { return _M_impl ? _M_impl->_M_function_name : ""; }
+
+  private:
+    const __impl* _M_impl = nullptr;
+  };
+
+
+}
+# 14 "/home/smoolldev/SmoollDev/Development/C++/pong/src/CCLog.hpp" 2
 
     
-# 13 "/home/smoolldev/SmoollDev/Development/C++/pong/src/CCLog.hpp"
+# 15 "/home/smoolldev/SmoollDev/Development/C++/pong/src/CCLog.hpp"
    enum Level { INFO = 1, ERROR = 2, WARNING = 3 };
-# 23 "/home/smoolldev/SmoollDev/Development/C++/pong/src/CCLog.hpp"
+# 25 "/home/smoolldev/SmoollDev/Development/C++/pong/src/CCLog.hpp"
     template <typename TF>
-    void _LOG(std::ostream &out, Level logLevel, TF const&first)
+    void _LOG(std::ostream &out, Level logLevel, std::source_location location, TF const&first)
     {
+        std::string filename(location.file_name());
+        size_t lastSlash = filename.find_last_of("/\\");
+        std::string file = filename.substr(lastSlash + 1);
+
         switch (logLevel)
         {
             case Level::INFO:
-                out << "INFO: " << first << std::endl;
+                out << "[" << file << "] " << "INFO: " << first << std::endl;
                 break;
             case Level::ERROR:
-                out << "ERROR: " << first << std::endl;
+                out << "[" << file << "] " << "ERROR: " << first << std::endl;
                 break;
             case Level::WARNING:
-                out << "WARNING: " << first << std::endl;
+                out << "[" << file << "] " << "WARNING: " << first << std::endl;
                 break;
             default:
                 break;
@@ -43501,24 +43571,28 @@ namespace std __attribute__ ((__visibility__ ("default")))
     }
 
     template <typename TF, typename ...TR>
-    void _LOG(std::ostream &out, Level logLevel, bool overwrite = false, TF const &first = "", TR const &...args)
+    void _LOG(std::ostream &out, Level logLevel, std::source_location location, bool overwrite = false, TF const &first = "", TR const &...args)
     {
+        std::string filename(location.file_name());
+        size_t lastSlash = filename.find_last_of("/\\");
+        std::string file = filename.substr(lastSlash + 1);
+
         if (!overwrite)
         {
             switch (logLevel)
             {
                 case Level::INFO:
-                    out << "INFO: " << first;
+                    out << "[" << file << "] " << "INFO: " << first;
                     (out << ... << args);
                     out << std::endl;
                     break;
                 case Level::ERROR:
-                    out << "ERROR: " << first;
+                    out << "[" << file << "] " << "ERROR: " << first;
                     (out << ... << args);
                     out << std::endl;
                     break;
                 case Level::WARNING:
-                    out << "WARNING: " << first;
+                    out << "[" << file << "] " << "WARNING: " << first;
                     (out << ... << args);
                     out << std::endl;
                     break;
@@ -43531,17 +43605,17 @@ namespace std __attribute__ ((__visibility__ ("default")))
             switch (logLevel)
             {
                 case Level::INFO:
-                    out << "INFO: " << first;
+                    out << "[" << file << "] " << "INFO: " << first;
                     (out << ... << args);
                     out << '\r' << std::flush;
                     break;
                 case Level::ERROR:
-                    out << "ERROR: " << first;
+                    out << "[" << file << "] " << "ERROR: " << first;
                     (out << ... << args);
                     out << '\r' << std::flush;
                     break;
                 case Level::WARNING:
-                    out << "WARNING: " << first;
+                    out << "[" << file << "] " << "WARNING: " << first;
                     (out << ... << args);
                     out << '\r' << std::flush;
                     break;
@@ -70988,15 +71062,15 @@ namespace cc
             {
                 if (name == _end_cc)
                 {
-                    _LOG(std::cerr, Level::ERROR, false, "Scene cannot have this name. It has been reserved internally for exiting the game. Please choose another name.");
+                    _LOG(std::cerr, Level::ERROR, std::source_location::current(), false, "Scene cannot have this name. It has been reserved internally for exiting the game. Please choose another name.");
                     cc::Window::GetInstance()->Destroy();
                 }
                 else
                 {
                     if (mScenes.find(name) != mScenes.end())
-                    { _LOG(std::clog, Level::WARNING, false, "Scene with name: ", name, " already exists. Overwriting..."); }
+                    { _LOG(std::clog, Level::WARNING, std::source_location::current(), false, "Scene with name: ", name, " already exists. Overwriting..."); }
                     mScenes[name] = [name]() { return new TScene(name); };
-                    _LOG(std::clog, Level::INFO, false, "Scene: \"", name, "\" added!");
+                    _LOG(std::clog, Level::INFO, std::source_location::current(), false, "Scene: \"", name, "\" added!");
                 }
             }
 

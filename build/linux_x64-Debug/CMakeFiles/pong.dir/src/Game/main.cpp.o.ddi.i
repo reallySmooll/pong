@@ -47786,7 +47786,7 @@ namespace cc
 }
 # 7 "/home/smoolldev/SmoollDev/Development/C++/pong/src/Game/../CC.hpp" 2
 # 1 "/home/smoolldev/SmoollDev/Development/C++/pong/src/Game/../CCLog.hpp" 1
-# 11 "/home/smoolldev/SmoollDev/Development/C++/pong/src/Game/../CCLog.hpp"
+# 12 "/home/smoolldev/SmoollDev/Development/C++/pong/src/Game/../CCLog.hpp"
 # 1 "/usr/include/c++/14.1.1/iostream" 1 3
 # 36 "/usr/include/c++/14.1.1/iostream" 3
        
@@ -59199,25 +59199,95 @@ namespace std __attribute__ ((__visibility__ ("default")))
 
 
 }
-# 12 "/home/smoolldev/SmoollDev/Development/C++/pong/src/Game/../CCLog.hpp" 2
+# 13 "/home/smoolldev/SmoollDev/Development/C++/pong/src/Game/../CCLog.hpp" 2
+# 1 "/usr/include/c++/14.1.1/source_location" 1 3
+# 33 "/usr/include/c++/14.1.1/source_location" 3
+# 1 "/usr/include/c++/14.1.1/bits/version.h" 1 3
+# 47 "/usr/include/c++/14.1.1/bits/version.h" 3
+       
+# 48 "/usr/include/c++/14.1.1/bits/version.h" 3
+# 34 "/usr/include/c++/14.1.1/source_location" 2 3
+
+
+
+
+namespace std
+{
+
+
+
+  struct source_location
+  {
+  private:
+    using uint_least32_t = unsigned int;
+    struct __impl
+    {
+      const char* _M_file_name;
+      const char* _M_function_name;
+      unsigned _M_line;
+      unsigned _M_column;
+    };
+    using __builtin_ret_type = decltype(__builtin_source_location());
+
+  public:
+
+
+    static consteval source_location
+    current(__builtin_ret_type __p = __builtin_source_location()) noexcept
+    {
+      source_location __ret;
+      __ret._M_impl = static_cast <const __impl*>(__p);
+      return __ret;
+    }
+
+    constexpr source_location() noexcept { }
+
+
+    constexpr uint_least32_t
+    line() const noexcept
+    { return _M_impl ? _M_impl->_M_line : 0u; }
+
+    constexpr uint_least32_t
+    column() const noexcept
+    { return _M_impl ? _M_impl->_M_column : 0u; }
+
+    constexpr const char*
+    file_name() const noexcept
+    { return _M_impl ? _M_impl->_M_file_name : ""; }
+
+    constexpr const char*
+    function_name() const noexcept
+    { return _M_impl ? _M_impl->_M_function_name : ""; }
+
+  private:
+    const __impl* _M_impl = nullptr;
+  };
+
+
+}
+# 14 "/home/smoolldev/SmoollDev/Development/C++/pong/src/Game/../CCLog.hpp" 2
 
     
-# 13 "/home/smoolldev/SmoollDev/Development/C++/pong/src/Game/../CCLog.hpp"
+# 15 "/home/smoolldev/SmoollDev/Development/C++/pong/src/Game/../CCLog.hpp"
    enum Level { INFO = 1, ERROR = 2, WARNING = 3 };
-# 23 "/home/smoolldev/SmoollDev/Development/C++/pong/src/Game/../CCLog.hpp"
+# 25 "/home/smoolldev/SmoollDev/Development/C++/pong/src/Game/../CCLog.hpp"
     template <typename TF>
-    void _LOG(std::ostream &out, Level logLevel, TF const&first)
+    void _LOG(std::ostream &out, Level logLevel, std::source_location location, TF const&first)
     {
+        std::string filename(location.file_name());
+        size_t lastSlash = filename.find_last_of("/\\");
+        std::string file = filename.substr(lastSlash + 1);
+
         switch (logLevel)
         {
             case Level::INFO:
-                out << "INFO: " << first << std::endl;
+                out << "[" << file << "] " << "INFO: " << first << std::endl;
                 break;
             case Level::ERROR:
-                out << "ERROR: " << first << std::endl;
+                out << "[" << file << "] " << "ERROR: " << first << std::endl;
                 break;
             case Level::WARNING:
-                out << "WARNING: " << first << std::endl;
+                out << "[" << file << "] " << "WARNING: " << first << std::endl;
                 break;
             default:
                 break;
@@ -59225,24 +59295,28 @@ namespace std __attribute__ ((__visibility__ ("default")))
     }
 
     template <typename TF, typename ...TR>
-    void _LOG(std::ostream &out, Level logLevel, bool overwrite = false, TF const &first = "", TR const &...args)
+    void _LOG(std::ostream &out, Level logLevel, std::source_location location, bool overwrite = false, TF const &first = "", TR const &...args)
     {
+        std::string filename(location.file_name());
+        size_t lastSlash = filename.find_last_of("/\\");
+        std::string file = filename.substr(lastSlash + 1);
+
         if (!overwrite)
         {
             switch (logLevel)
             {
                 case Level::INFO:
-                    out << "INFO: " << first;
+                    out << "[" << file << "] " << "INFO: " << first;
                     (out << ... << args);
                     out << std::endl;
                     break;
                 case Level::ERROR:
-                    out << "ERROR: " << first;
+                    out << "[" << file << "] " << "ERROR: " << first;
                     (out << ... << args);
                     out << std::endl;
                     break;
                 case Level::WARNING:
-                    out << "WARNING: " << first;
+                    out << "[" << file << "] " << "WARNING: " << first;
                     (out << ... << args);
                     out << std::endl;
                     break;
@@ -59255,17 +59329,17 @@ namespace std __attribute__ ((__visibility__ ("default")))
             switch (logLevel)
             {
                 case Level::INFO:
-                    out << "INFO: " << first;
+                    out << "[" << file << "] " << "INFO: " << first;
                     (out << ... << args);
                     out << '\r' << std::flush;
                     break;
                 case Level::ERROR:
-                    out << "ERROR: " << first;
+                    out << "[" << file << "] " << "ERROR: " << first;
                     (out << ... << args);
                     out << '\r' << std::flush;
                     break;
                 case Level::WARNING:
-                    out << "WARNING: " << first;
+                    out << "[" << file << "] " << "WARNING: " << first;
                     (out << ... << args);
                     out << '\r' << std::flush;
                     break;
@@ -122512,15 +122586,15 @@ namespace cc
             {
                 if (name == _end_cc)
                 {
-                    _LOG(std::cerr, Level::ERROR, false, "Scene cannot have this name. It has been reserved internally for exiting the game. Please choose another name.");
+                    _LOG(std::cerr, Level::ERROR, std::source_location::current(), false, "Scene cannot have this name. It has been reserved internally for exiting the game. Please choose another name.");
                     cc::Window::GetInstance()->Destroy();
                 }
                 else
                 {
                     if (mScenes.find(name) != mScenes.end())
-                    { _LOG(std::clog, Level::WARNING, false, "Scene with name: ", name, " already exists. Overwriting..."); }
+                    { _LOG(std::clog, Level::WARNING, std::source_location::current(), false, "Scene with name: ", name, " already exists. Overwriting..."); }
                     mScenes[name] = [name]() { return new TScene(name); };
-                    _LOG(std::clog, Level::INFO, false, "Scene: \"", name, "\" added!");
+                    _LOG(std::clog, Level::INFO, std::source_location::current(), false, "Scene: \"", name, "\" added!");
                 }
             }
 
@@ -136464,8 +136538,7 @@ namespace std __attribute__ ((__visibility__ ("default")))
 # 7 "/home/smoolldev/SmoollDev/Development/C++/pong/src/Game/Settings.hpp" 2
 
 
-
-# 9 "/home/smoolldev/SmoollDev/Development/C++/pong/src/Game/Settings.hpp"
+# 8 "/home/smoolldev/SmoollDev/Development/C++/pong/src/Game/Settings.hpp"
 class SettingsScene : public cc::Scene
 {
     using cc::Scene::Scene;
@@ -136479,11 +136552,108 @@ class SettingsScene : public cc::Scene
     cc::Text vsyncText;
     cc::Text showFPSText;
     cc::Text exitText;
-# 39 "/home/smoolldev/SmoollDev/Development/C++/pong/src/Game/Settings.hpp"
+
+    std::string fullscreen = "F: Fullscreen = ";
+    std::string vsync = "V: VSync = ";
+    std::string showFPS = "S: Show FPS = ";
+
+    std::string fullscreenYN;
+    std::string vsyncYN;
+    std::string showFPSYN;
+
+    std::fstream settingsFile;
+
+    void WriteToSettings()
+    {
+        _LOG(std::clog, Level::INFO, std::source_location::current(), false, "writing to settings file...");
+
+        settingsFile << "fullscreen = " << (settings->fullscreen ? "true" : "false") << std::endl;
+        settingsFile << "vsync = " << (settings->vsync ? "true" : "false") << std::endl;
+        settingsFile << "showFPS = " << (settings->showFPS ? "true" : "false") << std::endl;
+    }
+
+    void ReadFromSettings()
+    {
+        _LOG(std::clog, Level::INFO, std::source_location::current(), false, "reading from settings file...");
+
+        if (settingsFile.peek() == std::fstream::traits_type::eof())
+        {
+            _LOG(std::clog, Level::WARNING, std::source_location::current(), false, "variables in settings file not found! Setting to defaults:\n\tfullscreen = false\n\tvsync = true\n\tshowFPS = false");
+
+            settings->fullscreen = false;
+            settings->vsync = true;
+            settings->showFPS = false;
+
+            fullscreenYN = "N";
+            vsyncYN = "Y";
+            showFPSYN = "N";
+
+            fullscreen.append(fullscreenYN);
+            vsync.append(vsyncYN);
+            showFPS.append(showFPSYN);
+        }
+        else
+        {
+            std::string line;
+            while (std::getline(settingsFile, line))
+            {
+                if (line.find("fullscreen = true") != std::string::npos)
+                {
+                    settings->fullscreen = true;
+                    fullscreen = "F: Fullscreen = ";
+                    fullscreenYN = "Y";
+                    fullscreen.append(fullscreenYN);
+                }
+                else if (line.find("fullscreen = false") != std::string::npos)
+                {
+                    settings->fullscreen = false;
+                    fullscreen = "F: Fullscreen = ";
+                    fullscreenYN = "N";
+                    fullscreen.append(fullscreenYN);
+                }
+                else if (line.find("vsync = true") != std::string::npos)
+                {
+                    settings->vsync = true;
+                    vsync = "V: VSync = ";
+                    vsyncYN = "Y";
+                    vsync.append(vsyncYN);
+                }
+                else if (line.find("vsync = false") != std::string::npos)
+                {
+                    settings->vsync = false;
+                    vsync = "V: VSync = ";
+                    vsyncYN = "N";
+                    vsync.append(vsyncYN);
+                }
+                else if (line.find("showFPS = true") != std::string::npos)
+                {
+                    settings->showFPS = true;
+                    showFPS = "S: ShowFPS = ";
+                    showFPSYN = "Y";
+                    showFPS.append(showFPSYN);
+                }
+                else if (line.find("showFPS = false") != std::string::npos)
+                {
+                    settings->showFPS = false;
+                    showFPS = "S: ShowFPS = ";
+                    showFPSYN = "N";
+                    showFPS.append(showFPSYN);
+                }
+            }
+        }
+    }
+
     void OnStart() override
     {
+        _LOG(std::clog, Level::INFO, std::source_location::current(), false, "opening settings file...");
+        settingsFile.open(settings->settingsFilepath);
+        if (!settingsFile.is_open())
+        { _LOG(std::cerr, Level::ERROR, std::source_location::current(), false, "failed to open settings file!"); }
+
+        ReadFromSettings();
+
         fullscreenText.Create(window->GetRenderer(),
-                            "F: Fullscreen = N",
+                            fullscreen.c_str(),
                             gv->fontBig.font,
                             { 255, 255, 255 },
                             SCREEN_WIDTH / 2,
@@ -136491,7 +136661,7 @@ class SettingsScene : public cc::Scene
                             cc::Text::Alignment::CENTER);
 
         vsyncText.Create(window->GetRenderer(),
-                            "V: VSync = Y",
+                            vsync.c_str(),
                             gv->fontBig.font,
                             { 255, 255, 255 },
                             SCREEN_WIDTH / 2,
@@ -136499,7 +136669,7 @@ class SettingsScene : public cc::Scene
                             cc::Text::Alignment::CENTER);
 
         showFPSText.Create(window->GetRenderer(),
-                            "S: Show FPS = N",
+                            showFPS.c_str(),
                             gv->fontBig.font,
                             { 255, 255, 255 },
                             SCREEN_WIDTH / 2,
@@ -136521,6 +136691,11 @@ class SettingsScene : public cc::Scene
         vsyncText.Destroy();
         showFPSText.Destroy();
         exitText.Destroy();
+
+        _LOG(std::clog, Level::INFO, std::source_location::current(), false, "closing settings file...");
+        settingsFile.close();
+        if (settingsFile.is_open())
+        { _LOG(std::cerr, Level::ERROR, std::source_location::current(), false, "failed to close settings file!"); }
     }
 
     void OnHandleInput() override
@@ -136534,7 +136709,41 @@ class SettingsScene : public cc::Scene
                 switch (gv->e.key.keysym.sym)
                 {
                     case cc::Keyboard::CCK_ESCAPE:
+                        WriteToSettings();
                         SwitchScene("mainMenu");
+                        break;
+
+                    case cc::Keyboard::CCK_F:
+                        settings->fullscreen = !settings->fullscreen;
+                        fullscreenYN = (settings->fullscreen ? "Y" : "N");
+                        fullscreen.append(fullscreenYN);
+                        fullscreenText.Update(fullscreen.c_str(),
+                            gv->fontBig.font,
+                            { 255, 255, 255 },
+                            SCREEN_WIDTH / 2,
+                            100);
+                        break;
+
+                    case cc::Keyboard::CCK_V:
+                        settings->vsync = !settings->vsync;
+                        vsyncYN = (settings->vsync ? "Y" : "N");
+                        vsync.append(vsyncYN);
+                        vsyncText.Update(vsync.c_str(),
+                            gv->fontBig.font,
+                            { 255, 255, 255 },
+                            SCREEN_WIDTH / 2,
+                            200);
+                        break;
+
+                    case cc::Keyboard::CCK_S:
+                        settings->showFPS = !settings->showFPS;
+                        showFPSYN = (settings->showFPS ? "Y" : "N");
+                        showFPS.append(showFPSYN);
+                        showFPSText.Update(showFPS.c_str(),
+                            gv->fontBig.font,
+                            { 255, 255, 255 },
+                            SCREEN_WIDTH / 2,
+                            300);
                         break;
 
                     default:
