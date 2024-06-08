@@ -4,6 +4,7 @@
 #include "Globals.hpp"
 
 #include <fstream>
+#include <filesystem>
 
 class SettingsScene : public cc::Scene
 {
@@ -27,22 +28,20 @@ class SettingsScene : public cc::Scene
     std::string vsyncYN;
     std::string showFPSYN;
 
-    std::fstream settingsFile;
-
     void WriteToSettings()
     {
         LOG("writing to settings file...");
 
-        settingsFile << "fullscreen = " << (settings->fullscreen ? "true" : "false") << std::endl;
-        settingsFile << "vsync = " << (settings->vsync ? "true" : "false") << std::endl;
-        settingsFile << "showFPS = " << (settings->showFPS ? "true" : "false") << std::endl;
+        settings->file << "fullscreen = " << (settings->fullscreen ? "true" : "false") << std::endl;
+        settings->file << "vsync = " << (settings->vsync ? "true" : "false") << std::endl;
+        settings->file << "showFPS = " << (settings->showFPS ? "true" : "false") << std::endl;
     }
 
     void ReadFromSettings()
     {
         LOG("reading from settings file...");
 
-        if (settingsFile.peek() == std::fstream::traits_type::eof())
+        if (std::filesystem::is_empty(settings->filepath))
         {
             WARNING("variables in settings file not found! Setting to defaults:\n\tfullscreen = false\n\tvsync = true\n\tshowFPS = false");
 
@@ -61,7 +60,7 @@ class SettingsScene : public cc::Scene
         else
         {
             std::string line;
-            while (std::getline(settingsFile, line))
+            while (std::getline(settings->file, line))
             {
                 if (line.find("fullscreen = true") != std::string::npos)
                 {
@@ -112,8 +111,8 @@ class SettingsScene : public cc::Scene
     void OnStart() override
     {
         LOG("opening settings file...");
-        settingsFile.open(settings->settingsFilepath);
-        if (!settingsFile.is_open())
+        settings->file.open(settings->filepath);
+        if (!settings->file.is_open())
         { ERROR("failed to open settings file!"); }
 
         ReadFromSettings();
@@ -159,8 +158,8 @@ class SettingsScene : public cc::Scene
         exitText.Destroy();
 
         LOG("closing settings file...");
-        settingsFile.close();
-        if (settingsFile.is_open())
+        settings->file.close();
+        if (settings->file.is_open())
         { ERROR("failed to close settings file!"); }
     }
 
@@ -182,6 +181,7 @@ class SettingsScene : public cc::Scene
                     case cc::Keyboard::CCK_F:
                         settings->fullscreen = !settings->fullscreen;
                         fullscreenYN = (settings->fullscreen ? "Y" : "N");
+                        fullscreen = "F: Fullscreen = ";
                         fullscreen.append(fullscreenYN);
                         fullscreenText.Update(fullscreen.c_str(),
                             gv->fontBig.font,
@@ -193,6 +193,7 @@ class SettingsScene : public cc::Scene
                     case cc::Keyboard::CCK_V:
                         settings->vsync = !settings->vsync;
                         vsyncYN = (settings->vsync ? "Y" : "N");
+                        vsync = "V: VSync = ";
                         vsync.append(vsyncYN);
                         vsyncText.Update(vsync.c_str(),
                             gv->fontBig.font,
@@ -204,6 +205,7 @@ class SettingsScene : public cc::Scene
                     case cc::Keyboard::CCK_S:
                         settings->showFPS = !settings->showFPS;
                         showFPSYN = (settings->showFPS ? "Y" : "N");
+                        showFPS = "S: Show FPS = ";
                         showFPS.append(showFPSYN);
                         showFPSText.Update(showFPS.c_str(),
                             gv->fontBig.font,
