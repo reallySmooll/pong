@@ -3,6 +3,8 @@
 
 #include "Globals.hpp"
 
+#include <filesystem>
+
 struct MainMenuScene : public cc::Scene
 {
     using cc::Scene::Scene;
@@ -15,6 +17,55 @@ struct MainMenuScene : public cc::Scene
     cc::Text exitText;
 
     Gamevars *gv = Gamevars::GetInstance();
+    Gamevars::Settings *settings = Gamevars::Settings::GetInstance();
+
+    void ReadFromSettings()
+    {
+        LOG("reading from settings file...");
+
+        // open the file in read mode.
+        settings->file.open(settings->filepath, std::ios_base::in);
+        if (!settings->file.is_open())
+        { ERROR("failed to open settings file for reading!"); }
+
+        // if settings file is empty, set variables to defaults,
+        // they'll be written to the file on scene switch.
+        // if not empty, read all lines and set variables based
+        // on true or false values.
+        if (std::filesystem::is_empty(settings->filepath))
+        {
+            WARNING("variables in settings file not found! Setting to defaults:\n\tfullscreen = false\n\tvsync = true\n\tshowFPS = false");
+
+            settings->fullscreen = false;
+            settings->vsync = true;
+            settings->showFPS = false;
+        }
+        else
+        {
+            std::string line;
+            while (std::getline(settings->file, line))
+            {
+                if (line.find("fullscreen = true") != std::string::npos)
+                { settings->fullscreen = true; }
+                else if (line.find("fullscreen = false") != std::string::npos)
+                { settings->fullscreen = false; }
+                else if (line.find("vsync = true") != std::string::npos)
+                { settings->vsync = true; }
+                else if (line.find("vsync = false") != std::string::npos)
+                { settings->vsync = false; }
+                else if (line.find("showFPS = true") != std::string::npos)
+                { settings->showFPS = true; }
+                else if (line.find("showFPS = false") != std::string::npos)
+                { settings->showFPS = false; }
+            }
+        }
+
+        window->ToggleFullscreen(settings->fullscreen);
+        window->ToggleVSync(settings->vsync);
+        gv->showDebug = settings->showFPS;
+
+        settings->file.close();
+    }
 
     void OnCreate() override
     {
@@ -37,6 +88,8 @@ struct MainMenuScene : public cc::Scene
 
     void OnStart() override
     {
+        ReadFromSettings();
+
         mainMenuText.Create(window->GetRenderer(),
                             "PONG",
                             gv->fontHuge.font,
@@ -98,18 +151,6 @@ struct MainMenuScene : public cc::Scene
 
                     case cc::Keyboard::CCK_S:
                         SwitchScene("settings");
-                        break;
-
-                    case cc::Keyboard::CCK_F:
-                        window->SetFullscreenOrWindowed();
-                        break;
-
-                    case cc::Keyboard::CCK_F3:
-                        gv->showDebug = !gv->showDebug;
-                        break;
-
-                    case cc::Keyboard::CCK_V:
-                        window->EnableVSync();
                         break;
 
                     default:

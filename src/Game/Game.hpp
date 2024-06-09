@@ -301,18 +301,6 @@ class GameScene : public cc::Scene
                         SwitchScene("mainMenu");
                         break;
 
-                    case cc::Keyboard::CCK_F:
-                        window->SetFullscreenOrWindowed();
-                        break;
-
-                    case cc::Keyboard::CCK_F3:
-                        gv->showDebug = !gv->showDebug;
-                        break;
-
-                    case cc::Keyboard::CCK_V:
-                        window->EnableVSync();
-                        break;
-
                     case cc::Keyboard::CCK_R:
                         if (gameOver)
                         {

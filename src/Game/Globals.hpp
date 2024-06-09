@@ -17,9 +17,9 @@ struct Gamevars
 
         std::string filepath = "./resources/.settings";
 
-        bool fullscreen = false;
-        bool vsync = true;
-        bool showFPS = false;
+        bool fullscreen;
+        bool vsync;
+        bool showFPS;
 
         static Settings *GetInstance()
         {

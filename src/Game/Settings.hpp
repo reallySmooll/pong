@@ -5,6 +5,7 @@
 
 #include <fstream>
 #include <filesystem>
+#include <ios>
 
 class SettingsScene : public cc::Scene
 {
@@ -32,15 +33,34 @@ class SettingsScene : public cc::Scene
     {
         LOG("writing to settings file...");
 
+        // open settings file in overwrite mode.
+        settings->file.open(settings->filepath, std::ios_base::out);
+        if (!settings->file.is_open())
+        { ERROR("failed to open settings file for writing!"); }
+
+        // write "true" or "false" based on value of settings
+        // variables to settings file.
         settings->file << "fullscreen = " << (settings->fullscreen ? "true" : "false") << std::endl;
         settings->file << "vsync = " << (settings->vsync ? "true" : "false") << std::endl;
         settings->file << "showFPS = " << (settings->showFPS ? "true" : "false") << std::endl;
+
+        // close settings file after writing.
+        settings->file.close();
     }
 
     void ReadFromSettings()
     {
         LOG("reading from settings file...");
 
+        // open the file in read mode.
+        settings->file.open(settings->filepath, std::ios_base::in);
+        if (!settings->file.is_open())
+        { ERROR("failed to open settings file for reading!"); }
+
+        // if settings file is empty, set variables to defaults,
+        // they'll be written to the file on scene switch.
+        // if not empty, read all lines and set variables based
+        // on true or false values.
         if (std::filesystem::is_empty(settings->filepath))
         {
             WARNING("variables in settings file not found! Setting to defaults:\n\tfullscreen = false\n\tvsync = true\n\tshowFPS = false");
@@ -106,17 +126,34 @@ class SettingsScene : public cc::Scene
                 }
             }
         }
+
+        // close the file after reading,
+        // writing will open the file in different
+        // modes.
+        settings->file.close();
     }
 
     void OnStart() override
     {
-        LOG("opening settings file...");
-        settings->file.open(settings->filepath);
-        if (!settings->file.is_open())
-        { ERROR("failed to open settings file!"); }
+        // if file does not exist, create it without
+        // writing anything to it and close file
+        // immediately.
+        if (!std::filesystem::exists(settings->filepath))
+        {
+            std::ofstream f(settings->filepath);
+            f.close();
+        }
 
+        // read and set settings variables,
+        // check function definition for more info.
         ReadFromSettings();
 
+        LOG(fullscreen);
+        LOG(vsync);
+        LOG(showFPS);
+
+        // create cc::Text objects for settings and
+        // exit option.
         fullscreenText.Create(window->GetRenderer(),
                             fullscreen.c_str(),
                             gv->fontBig.font,
@@ -152,15 +189,11 @@ class SettingsScene : public cc::Scene
 
     void OnExit() override
     {
+        // destroy cc::Text objects.
         fullscreenText.Destroy(); 
         vsyncText.Destroy();
         showFPSText.Destroy();
         exitText.Destroy();
-
-        LOG("closing settings file...");
-        settings->file.close();
-        if (settings->file.is_open())
-        { ERROR("failed to close settings file!"); }
     }
 
     void OnHandleInput() override
@@ -180,6 +213,7 @@ class SettingsScene : public cc::Scene
 
                     case cc::Keyboard::CCK_F:
                         settings->fullscreen = !settings->fullscreen;
+                        window->ToggleFullscreen(settings->fullscreen);
                         fullscreenYN = (settings->fullscreen ? "Y" : "N");
                         fullscreen = "F: Fullscreen = ";
                         fullscreen.append(fullscreenYN);
@@ -192,6 +226,7 @@ class SettingsScene : public cc::Scene
 
                     case cc::Keyboard::CCK_V:
                         settings->vsync = !settings->vsync;
+                        window->ToggleVSync(settings->vsync);
                         vsyncYN = (settings->vsync ? "Y" : "N");
                         vsync = "V: VSync = ";
                         vsync.append(vsyncYN);
@@ -204,6 +239,7 @@ class SettingsScene : public cc::Scene
 
                     case cc::Keyboard::CCK_S:
                         settings->showFPS = !settings->showFPS;
+                        gv->showDebug = !gv->showDebug;
                         showFPSYN = (settings->showFPS ? "Y" : "N");
                         showFPS = "S: Show FPS = ";
                         showFPS.append(showFPSYN);
