@@ -143,27 +143,19 @@ namespace cc
     void Window::SetSize(int width, int height)
     { SDL_SetWindowSize(mWindow, width, height); }
 
-    void Window::SetFullscreenOrWindowed()
+    void Window::ToggleFullscreen(bool fullscreen)
     {
-        uint32_t flags = SDL_GetWindowFlags(mWindow);
-
-        if (flags & SDL_WINDOW_FULLSCREEN)
+        if (!fullscreen)
         { SDL_SetWindowFullscreen(mWindow, 0); }
         else
         { SDL_SetWindowFullscreen(mWindow, SDL_WINDOW_FULLSCREEN); }
     }
 
-    void Window::EnableVSync()
+    void Window::ToggleVSync(bool vsync)
     {
-        if (!mVSyncEnabled)
-        {
-            SDL_RenderSetVSync(mRenderer, 1);
-            mVSyncEnabled = !mVSyncEnabled;
-        }
+        if (vsync)
+        { SDL_RenderSetVSync(mRenderer, 1); }
         else
-        {
-            SDL_RenderSetVSync(mRenderer, 0);
-            mVSyncEnabled = !mVSyncEnabled;
-        }
+        { SDL_RenderSetVSync(mRenderer, 0); }
     }
 }

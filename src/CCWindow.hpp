@@ -27,8 +27,9 @@ namespace cc
 
             void SetTitle(const char *title);
             void SetSize(int width, int height);
-            void SetFullscreenOrWindowed();
-            void EnableVSync();
+
+            void ToggleFullscreen(bool fullscreen = false);
+            void ToggleVSync(bool vsync = true);
 
             static Window *GetInstance()
             {
@@ -67,8 +68,6 @@ namespace cc
             int mY = 0;
 
             uint32_t mFlags = 0;
-
-            bool mVSyncEnabled = true;
     };
 }
 
