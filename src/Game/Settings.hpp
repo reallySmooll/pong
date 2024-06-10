@@ -207,11 +207,13 @@ class SettingsScene : public cc::Scene
                 switch (gv->e.key.keysym.sym)
                 {
                     case cc::Keyboard::CCK_ESCAPE:
+                        gv->selectSFX.Play();
                         WriteToSettings();
                         SwitchScene("mainMenu");
                         break;
 
                     case cc::Keyboard::CCK_F:
+                        gv->selectSFX.Play();
                         settings->fullscreen = !settings->fullscreen;
                         window->ToggleFullscreen(settings->fullscreen);
                         fullscreenYN = (settings->fullscreen ? "Y" : "N");
@@ -225,6 +227,7 @@ class SettingsScene : public cc::Scene
                         break;
 
                     case cc::Keyboard::CCK_V:
+                        gv->selectSFX.Play();
                         settings->vsync = !settings->vsync;
                         window->ToggleVSync(settings->vsync);
                         vsyncYN = (settings->vsync ? "Y" : "N");
@@ -238,6 +241,7 @@ class SettingsScene : public cc::Scene
                         break;
 
                     case cc::Keyboard::CCK_S:
+                        gv->selectSFX.Play();
                         settings->showFPS = !settings->showFPS;
                         gv->showDebug = !gv->showDebug;
                         showFPSYN = (settings->showFPS ? "Y" : "N");
@@ -260,6 +264,8 @@ class SettingsScene : public cc::Scene
     void OnUpdate() override
     {
         gv->gTime.UpdateClock();
+
+        gv->selectSFX.Expire();
 
         gv->DebugUpdate();
     }

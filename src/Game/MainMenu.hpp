@@ -32,7 +32,7 @@ struct MainMenuScene : public cc::Scene
         // they'll be written to the file on scene switch.
         // if not empty, read all lines and set variables based
         // on true or false values.
-        if (std::filesystem::is_empty(settings->filepath))
+        if (std::filesystem::exists(settings->filepath) && std::filesystem::is_empty(settings->filepath))
         {
             WARNING("variables in settings file not found! Setting to defaults:\n\tfullscreen = false\n\tvsync = true\n\tshowFPS = false");
 
@@ -40,7 +40,7 @@ struct MainMenuScene : public cc::Scene
             settings->vsync = true;
             settings->showFPS = false;
         }
-        else
+        else if (std::filesystem::exists(settings->filepath) && !std::filesystem::is_empty(settings->filepath))
         {
             std::string line;
             while (std::getline(settings->file, line))
@@ -146,10 +146,12 @@ struct MainMenuScene : public cc::Scene
                         break;
 
                     case cc::Keyboard::CCK_RETURN:
+                        gv->selectSFX.Play();
                         SwitchScene("game");
                         break;
 
                     case cc::Keyboard::CCK_S:
+                        gv->selectSFX.Play();
                         SwitchScene("settings");
                         break;
 
@@ -163,6 +165,8 @@ struct MainMenuScene : public cc::Scene
     void OnUpdate() override
     {
         gv->gTime.UpdateClock();
+
+        gv->selectSFX.Expire();
 
         gv->DebugUpdate();
     }

@@ -132,9 +132,15 @@ class GameScene : public cc::Scene
         }
 
         if (ball.texture.textureQuad.y + ball.texture.textureQuad.h <= 0.0f)
-        { ball.velY = -ball.velY; }
+        {
+            gv->ballHitSFX.Play();
+            ball.velY = -ball.velY;
+        }
         else if (ball.texture.textureQuad.y + ball.texture.textureQuad.h >= SCREEN_HEIGHT)
-        { ball.velY = -ball.velY; }
+        {
+            gv->ballHitSFX.Play();
+            ball.velY = -ball.velY;
+        }
 
         if (ball.texture.textureQuad.x + ball.texture.textureQuad.w <= 0.0f)
         {
@@ -298,10 +304,12 @@ class GameScene : public cc::Scene
                 switch (gv->e.key.keysym.sym)
                 {
                     case cc::Keyboard::CCK_ESCAPE:
+                        gv->selectSFX.Play();
                         SwitchScene("mainMenu");
                         break;
 
                     case cc::Keyboard::CCK_R:
+                        gv->selectSFX.Play();
                         if (gameOver)
                         {
                             player.score = 0;
@@ -380,10 +388,11 @@ class GameScene : public cc::Scene
 
             HandleScore(ball, player, enemy);
 
-            gv->ballHitSFX.Expire();
-
             gv->accumulatedTime -= gv->timeStep;
         }
+
+        gv->ballHitSFX.Expire();
+        gv->selectSFX.Expire();
 
         gv->DebugUpdate();
     }
