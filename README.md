@@ -56,7 +56,7 @@ If (for some reason) you'd like to cross-compile pong from Linux to Windows, you
 
 ```bash
 $ mkdir build
-$ cmake -S . -B build (-DBUILD_TYPE=true if you want to build with the `Debug` configuration) -DCMAKE_TOOLCHAIN_FILE=./toolchains/toolchain-x86_64-w64-mingw32.cmake
+$ cmake -S . -B build (-DBUILD_TYPE=true if you want to build with the Debug configuration) -DCMAKE_TOOLCHAIN_FILE=./toolchains/toolchain-x86_64-w64-mingw32.cmake
 $ cmake --build build -j4
 ```
 
